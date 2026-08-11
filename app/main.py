@@ -12,7 +12,7 @@ class Distance:
     def __repr__(self) -> str:
         return f"Distance(km={self.km})"
 
-    def _add__(self, other: int | Distance) -> Distance:
+    def __add__(self, other: int | Distance) -> Distance:  # Fixed: _add__ -> __add__
         if isinstance(other, Distance):
             return Distance(self.km + other.km)
         else:
@@ -27,12 +27,16 @@ class Distance:
             return self
 
     def __mul__(self, other: int | Distance) -> Distance:
+        if isinstance(other, Distance):
+            raise TypeError("Cannot multiply Distance by Distance")
         return Distance(self.km * other)
 
     def __truediv__(self, other: (int, float) | Distance) -> Distance:
+        if isinstance(other, Distance):
+            raise TypeError("Cannot divide Distance by Distance")
         return Distance(round(self.km / other, 2))
 
-    def __lt__(self, other: (int, float) | Distance) -> Distance:
+    def __lt__(self, other: (int, float) | Distance) -> bool:
         if isinstance(other, Distance):
             return self.km < other.km
         else:
@@ -55,3 +59,9 @@ class Distance:
             return self.km >= other.km
         else:
             return self.km >= other
+
+    def __le__(self, other: float | Distance) -> bool:  # Added missing method
+        if isinstance(other, Distance):
+            return self.km <= other.km
+        else:
+            return self.km <= other
