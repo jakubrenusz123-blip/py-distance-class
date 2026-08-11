@@ -55,4 +55,3 @@ class Distance:
             return self.km >= other.km
         else:
             return self.km >= other
-
